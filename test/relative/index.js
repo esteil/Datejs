@@ -1089,6 +1089,12 @@
       run: function() { },
       assert: function() { return Date.today().next().year().equals(Date.parse('next year')) }
     }    
-  }   
+  },
+  'Biasing': {
+    'last week': {
+      run: function() { this.date = Date.parse('last week', { bias: 'past' }) },
+      assert: function() { return Date.today().last().week().equals(this.date) }
+    }
+  }
 });
 

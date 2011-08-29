@@ -635,6 +635,7 @@
             }
             
             var expression = !!(this.days && this.days !== null || this.orient || this.operator || this.bias);
+            var realExpression = !!(this.days && this.days !== null || this.orient || this.operator);
             
             var gap, mod, orient;
             orient = ((this.orient == "past" || this.operator == "subtract" || this.bias == "past") ? -1 : 1);
@@ -690,7 +691,7 @@
             // For parsing: "last monday", "last friday", "previous day",
             //   "next week", "next month", "next year",
             //   "today+", "+", "-", "yesterday at 4:00", "last friday at 20:00"
-            if (!this.value && expression && !this.bias) {
+            if (!this.value && realExpression) {
                 this.value = 1;
             }
 
