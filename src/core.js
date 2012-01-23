@@ -531,7 +531,7 @@
             this.setTimezone(config.timezone); 
         }
         
-        if (config.timezoneOffset) { 
+        if (typeof config.timezoneOffset !== "undefined" && config.timezoneOffset !== null) { 
             this.setTimezoneOffset(config.timezoneOffset); 
         }
 
