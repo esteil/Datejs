@@ -202,7 +202,7 @@
                 return t("ddd");
             case "j":
             case "%e":
-                return t("d");
+                return x.getDate();
             case "l":
             case "%A":
                 return t("dddd");
