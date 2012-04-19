@@ -248,7 +248,7 @@ var TimePeriod = function (years, months, days, hours, minutes, seconds, millise
             }
         }
         else {
-            while (d1 > d2 && d1.clone().addDays(-d1.getDaysInMonth()) > d2) {
+            while (d1 > d2 && d1.clone().addDays(Date.getDaysInMonth(d1.getYear(), d1.getMonth()) ) < d2) {
                 d1.addMonths(-1);
                 this.months--;
             }
