@@ -1,4 +1,4 @@
-/* 
+/*
   Added timezone support with big chunks of code from: git://github.com/mde/timezone-js.git
   TODO: Cleanup
 */
@@ -32,19 +32,35 @@
 
     $P.setTimezoneString = function (tz) {
         this.timezone = tz;
+        return this;
     };
 
+    //  Change the timezone and keep the relative time the same:
+    // eq: 15:00+02:00 (Europe/Berlin) to (Asia/Shanhai) will result in 15:00+08:00
+    $P.changeTimezone = function (tz) {
+        var previousOffset = this.getTimezoneInfo().tzOffset;
+        this.timezone = tz;
+        this._useCache = false;
+        // Set UTC minutes offsets by the delta of the two timezones
+        this.setUTCMinutes(this.getUTCMinutes() + this.getTimezoneInfo().tzOffset - previousOffset);
+        return this;
+    },
+
+    // Convert date to timezone:
+    // eq: 15:00+02:00 (Europe/Berlin) to (Asia/Shanhai) will result in 21:00+08:00
     $P.toTimezone = function (tz) {
         var previousOffset = this.getTimezoneInfo().tzOffset;
         this.timezone = tz;
         this._useCache = false;
         // Set UTC minutes offsets by the delta of the two timezones
         this.setUTCMinutes(this.getUTCMinutes() - this.getTimezoneInfo().tzOffset + previousOffset);
+        return this;
     };
 
     $P.removeTimezone = function () {
         this.timezone = null;
         this._useCache = false;
+        return this;
     };
 
 }());
