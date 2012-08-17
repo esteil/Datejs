@@ -871,7 +871,7 @@
 
       this.loadedZones[fileName] = true;
     
-        return this.loadZoneJSONData('external/datejs/src/tz_files/' + fileName + '.json', true);
+        return this.loadZoneJSONData(this.zoneFileBasePath + fileName + '.json', true);
       // return builtInLoadZoneFile(fileName, opts);
     };
     this.loadZoneJSONData = function (url, sync) {
