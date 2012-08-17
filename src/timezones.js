@@ -8,6 +8,30 @@
         $C = $D.CultureInfo;
 
 
+    var getTimezoneInfoByTz = function (date, tz) {
+        var res;
+        // If timezone is specified, get the correct timezone info based on the Date given
+        if (tz) {
+            res = tz === 'Etc/UTC' || tz === 'Etc/GMT' ? { tzOffset: 0, tzAbbr: 'UTC' }: timezoneJS.timezone.getTzInfo(date, tz);
+        }
+        // If no timezone was specified, use the local browser offset
+        else {
+            res = { tzOffset: date.getTimezoneOffset(), tzAbbr: null };
+        }
+        return res;
+    };
+
+    $P.showDateFromTzToTz = function (fromTz, toTz) {
+        var previousOffset = getTimezoneInfoByTz(this, fromTz).tzOffset;
+        var newOffset = getTimezoneInfoByTz(this, toTz).tzOffset;
+        // this.timezone = tz;
+        // this._useCache = false;
+        // Set UTC minutes offsets by the delta of the two timezones
+        var date = new Date(this.getTime());
+        date.setUTCMinutes(date.getUTCMinutes() - newOffset + previousOffset);
+        return date;
+    },
+
     $P.getTimezoneInfo = function () {
         if (this._useCache) return this._tzInfo;
         var res;
@@ -24,12 +48,6 @@
         return res;
     };
 
-    // $P.getUTCDateProxy = function () {
-    //     var dt = new Date(this);
-    //     dt.setUTCMinutes(dt.getUTCMinutes() + this.getTimezoneOffset());
-    //     return dt;
-    // };
-
     $P.setTimezoneString = function (tz) {
         this.timezone = tz;
         return this;
@@ -37,10 +55,13 @@
 
     //  Change the timezone and keep the relative time the same:
     // eq: 15:00+02:00 (Europe/Berlin) to (Asia/Shanhai) will result in 15:00+08:00
+    //     13:00 UTC                                                     07:00 UTC
     $P.changeTimezone = function (tz) {
+        var previousTz = this.timezone;
         var previousOffset = this.getTimezoneInfo().tzOffset;
         this.timezone = tz;
         this._useCache = false;
+
         // Set UTC minutes offsets by the delta of the two timezones
         this.setUTCMinutes(this.getUTCMinutes() + this.getTimezoneInfo().tzOffset - previousOffset);
         return this;
@@ -48,21 +69,24 @@
 
     // Convert date to timezone:
     // eq: 15:00+02:00 (Europe/Berlin) to (Asia/Shanhai) will result in 21:00+08:00
+    //     13:00 UTC                                                    13:00 UTC
     $P.toTimezone = function (tz) {
+        var newOffset = new Date().getTimezoneOffset();
         var previousOffset = this.getTimezoneInfo().tzOffset;
-        this.timezone = tz;
-        this._useCache = false;
-        // Set UTC minutes offsets by the delta of the two timezones
+
         this.setUTCMinutes(this.getUTCMinutes() - this.getTimezoneInfo().tzOffset + previousOffset);
         return this;
     };
 
-    $P.removeTimezone = function () {
-        this.timezone = null;
-        this._useCache = false;
-        return this;
+    /**
+     * Returns a new Date object that is an exact date and time copy of the original instance.
+     * @return {Date}    A new Date instance including the timezone
+     */
+    $P.clone = function () {
+        var n = new Date(this.getTime());
+        n.timezone = this.timezone;
+        return n;
     };
-
 }());
 
 // -----
