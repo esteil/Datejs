@@ -783,25 +783,25 @@
             x.t = x.toString;
             switch (format) {
                 case "d":
-                    return x.t(c.shortDate);
+                    return x.t(c.shortDate, options);
                 case "D":
-                    return x.t(c.longDate);
+                    return x.t(c.longDate, options);
                 case "F":
-                    return x.t(c.fullDateTime);
+                    return x.t(c.fullDateTime, options);
                 case "m":
-                    return x.t(c.monthDay);
+                    return x.t(c.monthDay, options);
                 case "r":
-                    return x.t(c.rfc1123);
+                    return x.t(c.rfc1123, options);
                 case "s":
-                    return x.t(c.sortableDateTime);
+                    return x.t(c.sortableDateTime, options);
                 case "t":
-                    return x.t(c.shortTime);
+                    return x.t(c.shortTime, options);
                 case "T":
-                    return x.t(c.longTime);
+                    return x.t(c.longTime, options);
                 case "u":
-                    return x.t(c.universalSortableDateTime);
+                    return x.t(c.universalSortableDateTime, options);
                 case "y":
-                    return x.t(c.yearMonth);
+                    return x.t(c.yearMonth, options);
             }
         }
 
