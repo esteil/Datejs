@@ -606,7 +606,7 @@
 
             if (this.timezone) { 
                 r.set({ timezone: this.timezone }); 
-            } else if (this.timezoneOffset) { 
+            } else if (typeof this.timezoneOffset !== "undefined" && this.timezoneOffset !== null) { 
                 r.set({ timezoneOffset: this.timezoneOffset }); 
             }
             

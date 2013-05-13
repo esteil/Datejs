@@ -24,94 +24,199 @@
   },
   
   'Standard Patterns': {
+
     setup: function() {  
+
         this.today = new Date().clearTime();
+
         this.baseline = new Date(2004,6,1,22,30,0);
+
         this.baseline2 = new Date(2004,6,15,6,45,0);
+
     },
+
+
 
     '2004, July 01, 10:30:00 PM : FullDateTimePattern [dddd, MMMM dd, yyyy h:mm:ss tt]': {
+
       run: function() { this.date =  Date.parse('2004, July 01, 10:30:00 PM') },
+
       assert: function() { return this.baseline.equals( this.date ) }
+
     },
+
     '2004, July 15, 6:45:00 AM : FullDateTimePattern [dddd, MMMM dd, yyyy h:mm:ss tt]': {
+
       run: function() { this.date =  Date.parse('2004, July 15, 6:45:00 AM') },
+
       assert: function() { return this.baseline2.equals( this.date ) }
+
     }, 
 
+
+
     
+
     'Thursday, July 01, 2004 : LongDatePattern [dddd, MMMM dd, yyyy]': {
+
       run: function() { this.date =  Date.parse('Thursday, July 01, 2004') },
+
       assert: function() { return this.baseline.clearTime().equals( this.date ) }
+
     },
+
     'Thursday, July 15, 2004 : LongDatePattern [dddd, MMMM dd, yyyy]': {
+
       run: function() { this.date =  Date.parse('Thursday, July 15, 2004') },
+
       assert: function() { return this.baseline2.clearTime().equals( this.date ) }
+
     },
+
+
+
 
 
     '10:30:00 PM : LongTimePattern [h:mm:ss tt]': {
+
       run: function() { this.date =  Date.parse('10:30:00 PM') },
+
       assert: function() { return this.today.clone().set( { hour: 22, minute: 30 } ).equals( this.date ) }
+
     },
+
     '6:45:00 AM : LongTimePattern [h:mm:ss tt]': {
+
       run: function() { this.date =  Date.parse('6:45:00 AM') },
+
       assert: function() { return this.today.clone().set( { hour: 6, minute: 45 } ).equals( this.date ) }
-    },    
-      
-        
-    'July 01 : MonthDayPattern [MMMM dd]': {
-      run: function() { this.date =  Date.parse('July 01') },
-      assert: function() { return this.today.clone().set( { month: 6, day: 1 } ).equals( this.date ) }
-    },
-    'July 15 : MonthDayPattern [MMMM dd]': {
-      run: function() { this.date =  Date.parse('July 15') },
-      assert: function() { return Date.today().set( { month: 6, day: 15 } ).equals( this.date ) }
-    },
-    'July 2004 : YearMonthPattern [MMMM, yyyy]': {
-      run: function() { this.date =  Date.parse('July 2004') },
-      assert: function() { return new Date(2004,6,1).equals( this.date ) }
-    },
-    '7/1/2004 : ShortDatePattern [M/d/yyyy]': {
-      run: function() { this.date =  Date.parse('7/1/2004') },
-      assert: function() { return this.baseline.clearTime().equals( this.date ) }
-    },
-    '7/15/2004 : ShortDatePattern [M/d/yyyy]': {
-      run: function() { this.date =  Date.parse('7/15/2004') },
-      assert: function() { return this.baseline2.clearTime().equals( this.date ) }
-    },
-    '10:30 PM : ShortTimePattern [h:mm tt]': {
-      run: function() { this.date =  Date.parse('10:30 PM') },
-      assert: function() { return this.today.clone().set( { hour: 22, minute: 30 } ).equals( this.date ) }
-    },
-    '6:45 AM : ShortTimePattern [h:mm tt]': {
-      run: function() { this.date =  Date.parse('6:45 AM') },
-      assert: function() { return this.today.clone().set( { hour: 6, minute: 45 } ).equals( this.date ) }
+
     },    
 
+      
+
+        
+
+    'July 01 : MonthDayPattern [MMMM dd]': {
+
+      run: function() { this.date =  Date.parse('July 01') },
+
+      assert: function() { return this.today.clone().set( { month: 6, day: 1 } ).equals( this.date ) }
+
+    },
+
+    'July 15 : MonthDayPattern [MMMM dd]': {
+
+      run: function() { this.date =  Date.parse('July 15') },
+
+      assert: function() { return Date.today().set( { month: 6, day: 15 } ).equals( this.date ) }
+
+    },
+
+    'July 2004 : YearMonthPattern [MMMM, yyyy]': {
+
+      run: function() { this.date =  Date.parse('July 2004') },
+
+      assert: function() { return new Date(2004,6,1).equals( this.date ) }
+
+    },
+
+    '7/1/2004 : ShortDatePattern [M/d/yyyy]': {
+
+      run: function() { this.date =  Date.parse('7/1/2004') },
+
+      assert: function() { return this.baseline.clearTime().equals( this.date ) }
+
+    },
+
+    '7/15/2004 : ShortDatePattern [M/d/yyyy]': {
+
+      run: function() { this.date =  Date.parse('7/15/2004') },
+
+      assert: function() { return this.baseline2.clearTime().equals( this.date ) }
+
+    },
+
+    '10:30 PM : ShortTimePattern [h:mm tt]': {
+
+      run: function() { this.date =  Date.parse('10:30 PM') },
+
+      assert: function() { return this.today.clone().set( { hour: 22, minute: 30 } ).equals( this.date ) }
+
+    },
+
+    '6:45 AM : ShortTimePattern [h:mm tt]': {
+
+      run: function() { this.date =  Date.parse('6:45 AM') },
+
+      assert: function() { return this.today.clone().set( { hour: 6, minute: 45 } ).equals( this.date ) }
+
+    },    
+
+
+
     '2004-07-01T22:30:00 : SortableDateTimePattern [yyyy-MM-ddTHH:mm:ss]': {
+
       run: function() { this.date =  Date.parse('2004-07-01T22:30:00') },
+
       assert: function() { return this.baseline.equals( this.date ) }
+
     },
+
     '2004-07-15T06:45:00 : SortableDateTimePattern [yyyy-MM-ddTHH:mm:ss]': {
+
       run: function() { this.date =  Date.parse('2004-07-15T06:45:00') },
+
       assert: function() { return this.baseline2.equals( this.date ) }
+
     },
+
     '11 Aug 2007 7:15:00 am EDT': {
+
       run: function() { this.date =  Date.parse('11 Aug 2007 7:15:00 am EDT') },
+
       assert: function() { return new Date(2007,7,11,7,15,0).add(-2).hours().equals( this.date ) }
+
     },
+
     'Tue Nov 20 2007 08:00:00 UTC': {
+
       run: function() { this.date = Date.parse("Tue Nov 20 2007 08:00:00 UTC") },
+
       assert: function() { return new Date(2007,10,20,8,0,0).setTimezone("UTC").equals( this.date ) }
+
     },
+
+    'Tue Nov 20 2007 08:00:00 GMT+0000': {
+
+      run: function() { this.date = Date.parse("Tue Nov 20 2007 08:00:00 GMT+0000"); },
+
+      assert: function() { return new Date(2007,10,20,8,0,0).setTimezone("UTC").equals( this.date ) }
+
+    },
+
+    'Tue Nov 20 2007 08:00:00 GMT-0000': {
+
+      run: function() { this.date = Date.parse("Tue Nov 20 2007 08:00:00 GMT-0000"); },
+
+      assert: function() { return new Date(2007,10,20,8,0,0).setTimezone("UTC").equals( this.date ) }
+
+    },
+
     '24 Apr 2008 17:00': {
+
       run: function() { this.date = Date.parse("24 Apr 2008 17:00") },
+
       assert: function() { return new Date(2008,3,24,17,0,0).equals( this.date ) }
+
     },
+
     '24 April 2008 17:00': {
+
       run: function() { this.date = Date.parse("24 April 2008 17:00") },
+
       assert: function() { return new Date(2008,3,24,17,0,0).equals( this.date ) }
+
     }   
 },
     
