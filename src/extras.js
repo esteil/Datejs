@@ -84,7 +84,7 @@
      * Converts the value of the current Date object to its equivalent string representation using a PHP/Unix style of date format specifiers.
      *
      * The following descriptions are from http://www.php.net/strftime and http://www.php.net/manual/en/function.date.php. 
-     * Copyright © 2001-2008 The PHP Group
+     * Copyright (c) 2001-2008 The PHP Group
      * 
      * Format Specifiers
      <pre>
@@ -202,7 +202,7 @@
                 return t("ddd");
             case "j":
             case "%e":
-                return t("d");
+                return x.getDate();
             case "l":
             case "%A":
                 return t("dddd");
@@ -296,6 +296,8 @@
                 return Math.floor(((now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds() + (now.getTimezoneOffset() + 60) * 60) / 86.4);
             case "c":
                 return x.toISOString().replace(/\"/g, "");
+            case "r":
+                return t("ddd, dd MMM yyyy HH:mm:ss ") + x.getUTCOffset();
             case "U":
                 return $D.strtotime("now");
             case "%c":

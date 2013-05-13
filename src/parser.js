@@ -819,7 +819,11 @@
     g.mm = _.cache(_.process(_.rtoken(/^[0-5][0-9]/), t.minute));
     g.s = _.cache(_.process(_.rtoken(/^([0-5][0-9]|[0-9])/), t.second));
     g.ss = _.cache(_.process(_.rtoken(/^[0-5][0-9]/), t.second));
-    g.fff = _.cache(_.process(_.rtoken(/^[0-9]{3}(?!\d)/), t.millisecond));
+    // cpbotha: changed following regular expression so it can also
+    // parse isoformat microseconds, e.g. 2012-05-09T23:46:00.123456+02:00
+    // it simply consumes the fractional millisecond part.
+    //g.fff = _.cache(_.process(_.rtoken(/^[0-9]{3}(?!\d)/), t.millisecond));
+    g.fff = _.cache(_.process(_.rtoken(/^([0-9]{3})(\d{3})?/), t.millisecond));
     g.hms = _.cache(_.sequence([g.H, g.m, g.s], g.timePartDelimiter));
   
     // _.min(1, _.set([ g.H, g.m, g.s ], g._t));
@@ -972,6 +976,7 @@
         "yyyy-MM-ddTHH:mm:ss",
         "yyyy-MM-ddTHH:mmz",
         "yyyy-MM-ddTHH:mm",
+        "yyyy-MM-dd",
         "ddd, MMM dd, yyyy H:mm:ss tt",
         "ddd MMM d yyyy HH:mm:ss zzz",
         "MMddyyyy",
