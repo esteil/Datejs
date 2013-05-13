@@ -1,5 +1,5 @@
-/**!
- * @version: 1.0
+/**
+ * @version: 1.0 Alpha-1
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
@@ -32,7 +32,7 @@
     $P._isSecond = false;
 
     // private
-    $N._dateElement = "days";
+    $N._dateElement = "day";
 
     /** 
      * Moves the date to the next instance of a date as specified by the subsequent date element function (eg. .day(), .month()), month name function (eg. .january(), .jan()) or day name function (eg. .friday(), fri()).
@@ -423,10 +423,11 @@
                 return true;
             }
             
-            if (j.substring(j.length - 1) != "s") {
-                j += "s"; 
+            l = j
+            if (l.substring(l.length - 1) != "s") {
+                l += "s";
             }
-            return this["add" + j](this._orient);
+            return this["add" + l](this._orient);
         };
     };
     
@@ -445,7 +446,7 @@
         $P[de] = $P[de + "s"] = ef(px[k]);
         
         // Create date element functions and plural date element functions used with Number (eg. day(), days(), months()).
-        $N[de] = $N[de + "s"] = nf(de + "s");
+        $N[de] = $N[de + "s"] = nf(de+"s");
     }
     
     $P._ss = ef("Second");
