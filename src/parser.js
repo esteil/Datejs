@@ -920,6 +920,7 @@
 	// check for these formats first
     g._formats = g.formats([
         "\"yyyy-MM-ddTHH:mm:ssZ\"",
+        "yyyyMMddTHHmmssZ", // TEST
         "yyyy-MM-ddTHH:mm:ssZ",
         "yyyy-MM-ddTHH:mm:ssz",
         "yyyy-MM-ddTHH:mm:ss",

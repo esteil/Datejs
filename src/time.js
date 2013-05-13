@@ -1,5 +1,5 @@
-/**!
- * @version: 1.0
+/**
+ * @version: 1.0 Alpha-1
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
@@ -248,7 +248,7 @@ var TimePeriod = function (years, months, days, hours, minutes, seconds, millise
             }
         }
         else {
-            while (d1 > d2 && d1.clone().addDays(-d1.getDaysInMonth()) > d2) {
+            while (d1 > d2 && d1.clone().addDays(Date.getDaysInMonth(d1.getYear(), d1.getMonth()) ) < d2) {
                 d1.addMonths(-1);
                 this.months--;
             }
