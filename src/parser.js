@@ -3,18 +3,18 @@
  * @author: Coolite Inc. http://www.coolite.com/
  * @date: 2008-04-13
  * @copyright: Copyright (c) 2006-2008, Coolite Inc. (http://www.coolite.com/). All rights reserved.
- * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/. 
+ * @license: Licensed under The MIT License. See license.txt and http://www.datejs.com/license/.
  * @website: http://www.datejs.com/
  */
- 
+
 (function () {
     Date.Parsing = {
         Exception: function (s) {
-            this.message = "Parse error at '" + s.substring(0, 10) + " ...'"; 
+            this.message = "Parse error at '" + s.substring(0, 10) + " ...'";
         }
     };
-    
-    var $P = Date.Parsing; 
+
+    var $P = Date.Parsing;
     var _ = $P.Operators = {
         //
         // Tokenizers
@@ -22,10 +22,10 @@
         rtoken: function (r) { // regex token
             return function (s) {
                 var mx = s.match(r);
-                if (mx) { 
-                    return ([ mx[0], s.substring(mx[0].length) ]); 
-                } else { 
-                    throw new $P.Exception(s); 
+                if (mx) {
+                    return ([ mx[0], s.substring(mx[0].length) ]);
+                } else {
+                    throw new $P.Exception(s);
                 }
             };
         },
@@ -37,23 +37,23 @@
             };
         },
         stoken: function (s) { // string token
-            return _.rtoken(new RegExp("^" + s)); 
+            return _.rtoken(new RegExp("^" + s));
         },
 
         //
         // Atomic Operators
-        // 
+        //
 
         until: function (p) {
             return function (s) {
                 var qx = [], rx = null;
-                while (s.length) { 
-                    try { 
-                        rx = p.call(this, s); 
-                    } catch (e) { 
-                        qx.push(rx[0]); 
-                        s = rx[1]; 
-                        continue; 
+                while (s.length) {
+                    try {
+                        rx = p.call(this, s);
+                    } catch (e) {
+                        qx.push(rx[0]);
+                        s = rx[1];
+                        continue;
                     }
                     break;
                 }
@@ -62,14 +62,14 @@
         },
         many: function (p) {
             return function (s) {
-                var rx = [], r = null; 
-                while (s.length) { 
-                    try { 
-                        r = p.call(this, s); 
-                    } catch (e) { 
-                        return [ rx, s ]; 
+                var rx = [], r = null;
+                while (s.length) {
+                    try {
+                        r = p.call(this, s);
+                    } catch (e) {
+                        return [ rx, s ];
                     }
-                    rx.push(r[0]); 
+                    rx.push(r[0]);
                     s = r[1];
                 }
                 return [ rx, s ];
@@ -79,166 +79,166 @@
         // generator operators -- see below
         optional: function (p) {
             return function (s) {
-                var r = null; 
-                try { 
-                    r = p.call(this, s); 
-                } catch (e) { 
-                    return [ null, s ]; 
+                var r = null;
+                try {
+                    r = p.call(this, s);
+                } catch (e) {
+                    return [ null, s ];
                 }
                 return [ r[0], r[1] ];
             };
         },
         not: function (p) {
             return function (s) {
-                try { 
-                    p.call(this, s); 
-                } catch (e) { 
-                    return [null, s]; 
+                try {
+                    p.call(this, s);
+                } catch (e) {
+                    return [null, s];
                 }
                 throw new $P.Exception(s);
             };
         },
         ignore: function (p) {
-            return p ? 
-            function (s) { 
-                var r = null; 
-                r = p.call(this, s); 
-                return [null, r[1]]; 
+            return p ?
+            function (s) {
+                var r = null;
+                r = p.call(this, s);
+                return [null, r[1]];
             } : null;
         },
         product: function () {
-            var px = arguments[0], 
+            var px = arguments[0],
             qx = Array.prototype.slice.call(arguments, 1), rx = [];
             for (var i = 0 ; i < px.length ; i++) {
                 rx.push(_.each(px[i], qx));
             }
             return rx;
         },
-        cache: function (rule) { 
-            var cache = {}, r = null; 
+        cache: function (rule) {
+            var cache = {}, r = null;
             return function (s) {
-                try { 
-                    r = cache[s] = (cache[s] || rule.call(this, s)); 
-                } catch (e) { 
-                    r = cache[s] = e; 
+                try {
+                    r = cache[s] = (cache[s] || rule.call(this, s));
+                } catch (e) {
+                    r = cache[s] = e;
                 }
-                if (r instanceof $P.Exception) { 
-                    throw r; 
-                } else { 
-                    return r; 
+                if (r instanceof $P.Exception) {
+                    throw r;
+                } else {
+                    return r;
                 }
             };
         },
-    	  
+
         // vector operators -- see below
         any: function () {
             var px = arguments;
-            return function (s) { 
+            return function (s) {
                 var r = null;
-                for (var i = 0; i < px.length; i++) { 
-                    if (px[i] == null) { 
-                        continue; 
+                for (var i = 0; i < px.length; i++) {
+                    if (px[i] == null) {
+                        continue;
                     }
-                    try { 
-                        r = (px[i].call(this, s)); 
-                    } catch (e) { 
-                        r = null; 
+                    try {
+                        r = (px[i].call(this, s));
+                    } catch (e) {
+                        r = null;
                     }
-                    if (r) { 
-                        return r; 
+                    if (r) {
+                        return r;
                     }
-                } 
+                }
                 throw new $P.Exception(s);
             };
         },
-        each: function () { 
+        each: function () {
             var px = arguments;
-            return function (s) { 
+            return function (s) {
                 var rx = [], r = null;
-                for (var i = 0; i < px.length ; i++) { 
-                    if (px[i] == null) { 
-                        continue; 
+                for (var i = 0; i < px.length ; i++) {
+                    if (px[i] == null) {
+                        continue;
                     }
-                    try { 
-                        r = (px[i].call(this, s)); 
-                    } catch (e) { 
-                        throw new $P.Exception(s); 
+                    try {
+                        r = (px[i].call(this, s));
+                    } catch (e) {
+                        throw new $P.Exception(s);
                     }
-                    rx.push(r[0]); 
+                    rx.push(r[0]);
                     s = r[1];
                 }
-                return [ rx, s]; 
+                return [ rx, s];
             };
         },
-        all: function () { 
-            var px = arguments, _ = _; 
-            return _.each(_.optional(px)); 
+        all: function () {
+            var px = arguments, _ = _;
+            return _.each(_.optional(px));
         },
 
         // delimited operators
         sequence: function (px, d, c) {
-            d = d || _.rtoken(/^\s*/);  
+            d = d || _.rtoken(/^\s*/);
             c = c || null;
-            
-            if (px.length == 1) { 
-                return px[0]; 
+
+            if (px.length == 1) {
+                return px[0];
             }
             return function (s) {
                 var r = null, q = null;
-                var rx = []; 
+                var rx = [];
                 for (var i = 0; i < px.length ; i++) {
-                    try { 
-                        r = px[i].call(this, s); 
-                    } catch (e) { 
-                        break; 
+                    try {
+                        r = px[i].call(this, s);
+                    } catch (e) {
+                        break;
                     }
                     rx.push(r[0]);
-                    try { 
-                        q = d.call(this, r[1]); 
-                    } catch (ex) { 
-                        q = null; 
-                        break; 
+                    try {
+                        q = d.call(this, r[1]);
+                    } catch (ex) {
+                        q = null;
+                        break;
                     }
                     s = q[1];
                 }
-                if (!r) { 
-                    throw new $P.Exception(s); 
+                if (!r) {
+                    throw new $P.Exception(s);
                 }
-                if (q) { 
-                    throw new $P.Exception(q[1]); 
+                if (q) {
+                    throw new $P.Exception(q[1]);
                 }
                 if (c) {
-                    try { 
+                    try {
                         r = c.call(this, r[1]);
-                    } catch (ey) { 
-                        throw new $P.Exception(r[1]); 
+                    } catch (ey) {
+                        throw new $P.Exception(r[1]);
                     }
                 }
                 return [ rx, (r?r[1]:s) ];
             };
         },
-    		
-	    //
-	    // Composite Operators
-	    //
-    		
-        between: function (d1, p, d2) { 
-            d2 = d2 || d1; 
+
+        //
+        // Composite Operators
+        //
+
+        between: function (d1, p, d2) {
+            d2 = d2 || d1;
             var _fn = _.each(_.ignore(d1), p, _.ignore(d2));
-            return function (s) { 
-                var rx = _fn.call(this, s); 
-                return [[rx[0][0], r[0][2]], rx[1]]; 
+            return function (s) {
+                var rx = _fn.call(this, s);
+                return [[rx[0][0], r[0][2]], rx[1]];
             };
         },
         list: function (p, d, c) {
-            d = d || _.rtoken(/^\s*/);  
+            d = d || _.rtoken(/^\s*/);
             c = c || null;
             return (p instanceof Array ?
                 _.each(_.product(p.slice(0, -1), _.ignore(d)), p.slice(-1), _.ignore(c)) :
                 _.each(_.many(_.each(p, _.ignore(d))), px, _.ignore(c)));
         },
         set: function (px, d, c) {
-            d = d || _.rtoken(/^\s*/); 
+            d = d || _.rtoken(/^\s*/);
             c = c || null;
             return function (s) {
                 // r is the current match, best the current 'best' match
@@ -250,57 +250,57 @@
 
                     // last is a flag indicating whether this must be the last element
                     // if there is only 1 element, then it MUST be the last one
-                    q = null; 
-                    p = null; 
-                    r = null; 
-                    last = (px.length == 1); 
+                    q = null;
+                    p = null;
+                    r = null;
+                    last = (px.length == 1);
 
                     // first, we try simply to match the current pattern
                     // if not, try the next pattern
-                    try { 
+                    try {
                         r = px[i].call(this, s);
-                    } catch (e) { 
-                        continue; 
+                    } catch (e) {
+                        continue;
                     }
 
                     // since we are matching against a set of elements, the first
                     // thing to do is to add r[0] to matched elements
                     rx = [[r[0]], r[1]];
 
-                    // if we matched and there is still input to parse and 
+                    // if we matched and there is still input to parse and
                     // we don't already know this is the last element,
                     // we're going to next check for the delimiter ...
                     // if there's none, or if there's no input left to parse
                     // than this must be the last element after all ...
                     if (r[1].length > 0 && ! last) {
-                        try { 
-                            q = d.call(this, r[1]); 
-                        } catch (ex) { 
-                            last = true; 
+                        try {
+                            q = d.call(this, r[1]);
+                        } catch (ex) {
+                            last = true;
                         }
-                    } else { 
-                        last = true; 
+                    } else {
+                        last = true;
                     }
 
-				    // if we parsed the delimiter and now there's no more input,
-				    // that means we shouldn't have parsed the delimiter at all
-				    // so don't update r and mark this as the last element ...
-                    if (!last && q[1].length === 0) { 
-                        last = true; 
+                    // if we parsed the delimiter and now there's no more input,
+                    // that means we shouldn't have parsed the delimiter at all
+                    // so don't update r and mark this as the last element ...
+                    if (!last && q[1].length === 0) {
+                        last = true;
                     }
 
 
-				    // so, if this isn't the last element, we're going to see if
-				    // we can get any more matches from the remaining (unmatched)
-				    // elements ...
+                    // so, if this isn't the last element, we're going to see if
+                    // we can get any more matches from the remaining (unmatched)
+                    // elements ...
                     if (!last) {
 
                         // build a list of the remaining rules we can match against,
                         // i.e., all but the one we just matched against
-                        var qx = []; 
-                        for (var j = 0; j < px.length ; j++) { 
-                            if (i != j) { 
-                                qx.push(px[j]); 
+                        var qx = [];
+                        for (var j = 0; j < px.length ; j++) {
+                            if (i != j) {
+                                qx.push(px[j]);
                             }
                         }
 
@@ -316,57 +316,57 @@
                             // basically, pick up the remaining text from p[1]
                             // and concat the result from p[0] so that we don't
                             // get endless nesting ...
-                            rx[0] = rx[0].concat(p[0]); 
-                            rx[1] = p[1]; 
+                            rx[0] = rx[0].concat(p[0]);
+                            rx[1] = p[1];
                         }
                     }
 
-				    // at this point, rx either contains the last matched element
-				    // or the entire matched set that starts with this element.
+                    // at this point, rx either contains the last matched element
+                    // or the entire matched set that starts with this element.
 
-				    // now we just check to see if this variation is better than
-				    // our best so far, in terms of how much of the input is parsed
-                    if (rx[1].length < best[1].length) { 
-                        best = rx; 
+                    // now we just check to see if this variation is better than
+                    // our best so far, in terms of how much of the input is parsed
+                    if (rx[1].length < best[1].length) {
+                        best = rx;
                     }
 
-				    // if we've parsed all the input, then we're finished
-                    if (best[1].length === 0) { 
-                        break; 
+                    // if we've parsed all the input, then we're finished
+                    if (best[1].length === 0) {
+                        break;
                     }
                 }
 
-			    // so now we've either gone through all the patterns trying them
-			    // as the initial match; or we found one that parsed the entire
-			    // input string ...
+                // so now we've either gone through all the patterns trying them
+                // as the initial match; or we found one that parsed the entire
+                // input string ...
 
-			    // if best has no matches, just return empty set ...
-                if (best[0].length === 0) { 
-                    return best; 
+                // if best has no matches, just return empty set ...
+                if (best[0].length === 0) {
+                    return best;
                 }
 
-			    // if a closing delimiter is provided, then we have to check it also
+                // if a closing delimiter is provided, then we have to check it also
                 if (c) {
                     // we try this even if there is no remaining input because the pattern
                     // may well be optional or match empty input ...
-                    try { 
-                        q = c.call(this, best[1]); 
-                    } catch (ey) { 
-                        throw new $P.Exception(best[1]); 
+                    try {
+                        q = c.call(this, best[1]);
+                    } catch (ey) {
+                        throw new $P.Exception(best[1]);
                     }
 
                     // it parsed ... be sure to update the best match remaining input
                     best[1] = q[1];
                 }
 
-			    // if we're here, either there was no closing delimiter or we parsed it
-			    // so now we have the best match; just return it!
+                // if we're here, either there was no closing delimiter or we parsed it
+                // so now we have the best match; just return it!
                 return best;
             };
         },
         forward: function (gr, fname) {
-            return function (s) { 
-                return gr[fname].call(this, s); 
+            return function (s) {
+                return gr[fname].call(this, s);
             };
         },
 
@@ -374,51 +374,51 @@
         // Translation Operators
         //
         replace: function (rule, repl) {
-            return function (s) { 
-                var r = rule.call(this, s); 
-                return [repl, r[1]]; 
+            return function (s) {
+                var r = rule.call(this, s);
+                return [repl, r[1]];
             };
         },
         process: function (rule, fn) {
-            return function (s) {  
-                var r = rule.call(this, s); 
-                return [fn.call(this, r[0]), r[1]]; 
+            return function (s) {
+                var r = rule.call(this, s);
+                return [fn.call(this, r[0]), r[1]];
             };
         },
         min: function (min, rule) {
             return function (s) {
-                var rx = rule.call(this, s); 
-                if (rx[0].length < min) { 
-                    throw new $P.Exception(s); 
+                var rx = rule.call(this, s);
+                if (rx[0].length < min) {
+                    throw new $P.Exception(s);
                 }
                 return rx;
             };
         }
     };
-	
 
-	// Generator Operators And Vector Operators
 
-	// Generators are operators that have a signature of F(R) => R,
-	// taking a given rule and returning another rule, such as 
-	// ignore, which parses a given rule and throws away the result.
+    // Generator Operators And Vector Operators
 
-	// Vector operators are those that have a signature of F(R1,R2,...) => R,
-	// take a list of rules and returning a new rule, such as each.
+    // Generators are operators that have a signature of F(R) => R,
+    // taking a given rule and returning another rule, such as
+    // ignore, which parses a given rule and throws away the result.
 
-	// Generator operators are converted (via the following _generator
-	// function) into functions that can also take a list or array of rules
-	// and return an array of new rules as though the function had been
-	// called on each rule in turn (which is what actually happens).
+    // Vector operators are those that have a signature of F(R1,R2,...) => R,
+    // take a list of rules and returning a new rule, such as each.
 
-	// This allows generators to be used with vector operators more easily.
-	// Example:
-	// each(ignore(foo, bar)) instead of each(ignore(foo), ignore(bar))
+    // Generator operators are converted (via the following _generator
+    // function) into functions that can also take a list or array of rules
+    // and return an array of new rules as though the function had been
+    // called on each rule in turn (which is what actually happens).
 
-	// This also turns generators into vector operators, which allows
-	// constructs like:
-	// not(cache(foo, bar))
-	
+    // This allows generators to be used with vector operators more easily.
+    // Example:
+    // each(ignore(foo, bar)) instead of each(ignore(foo), ignore(bar))
+
+    // This also turns generators into vector operators, which allows
+    // constructs like:
+    // not(cache(foo, bar))
+
     var _generator = function (op) {
         return function () {
             var args = null, rx = [];
@@ -427,109 +427,109 @@
             } else if (arguments[0] instanceof Array) {
                 args = arguments[0];
             }
-            if (args) { 
+            if (args) {
                 for (var i = 0, px = args.shift() ; i < px.length ; i++) {
-                    args.unshift(px[i]); 
-                    rx.push(op.apply(null, args)); 
+                    args.unshift(px[i]);
+                    rx.push(op.apply(null, args));
                     args.shift();
                     return rx;
-                } 
-            } else { 
-                return op.apply(null, arguments); 
+                }
+            } else {
+                return op.apply(null, arguments);
             }
         };
     };
-    
+
     var gx = "optional not ignore cache".split(/\s/);
-    
-    for (var i = 0 ; i < gx.length ; i++) { 
-        _[gx[i]] = _generator(_[gx[i]]); 
+
+    for (var i = 0 ; i < gx.length ; i++) {
+        _[gx[i]] = _generator(_[gx[i]]);
     }
 
     var _vector = function (op) {
         return function () {
-            if (arguments[0] instanceof Array) { 
-                return op.apply(null, arguments[0]); 
-            } else { 
-                return op.apply(null, arguments); 
+            if (arguments[0] instanceof Array) {
+                return op.apply(null, arguments[0]);
+            } else {
+                return op.apply(null, arguments);
             }
         };
     };
-    
+
     var vx = "each any all".split(/\s/);
-    
-    for (var j = 0 ; j < vx.length ; j++) { 
-        _[vx[j]] = _vector(_[vx[j]]); 
+
+    for (var j = 0 ; j < vx.length ; j++) {
+        _[vx[j]] = _vector(_[vx[j]]);
     }
-	
+
 }());
 
 (function () {
     var $D = Date, $P = $D.prototype;
 
-    var flattenAndCompact = function (ax) { 
-        var rx = []; 
+    var flattenAndCompact = function (ax) {
+        var rx = [];
         for (var i = 0; i < ax.length; i++) {
             if (ax[i] instanceof Array) {
                 rx = rx.concat(flattenAndCompact(ax[i]));
-            } else { 
-                if (ax[i]) { 
-                    rx.push(ax[i]); 
+            } else {
+                if (ax[i]) {
+                    rx.push(ax[i]);
                 }
             }
         }
         return rx;
     };
-    
+
     $D.Grammar = {};
-	
+
     $D.Translator = {
-        hour: function (s) { 
-            return function () { 
-                this.hour = Number(s); 
-            }; 
+        hour: function (s) {
+            return function () {
+                this.hour = Number(s);
+            };
         },
-        minute: function (s) { 
-            return function () { 
-                this.minute = Number(s); 
-            }; 
+        minute: function (s) {
+            return function () {
+                this.minute = Number(s);
+            };
         },
-        second: function (s) { 
-            return function () { 
-                this.second = Number(s); 
-            }; 
+        second: function (s) {
+            return function () {
+                this.second = Number(s);
+            };
         },
         millisecond: function (s) {
             return function () {
                 this.millisecond = Number(s);
             };
         },
-        meridian: function (s) { 
-            return function () { 
-                this.meridian = s.slice(0, 1).toLowerCase(); 
-            }; 
+        meridian: function (s) {
+            return function () {
+                this.meridian = s.slice(0, 1).toLowerCase();
+            };
         },
         timezone: function (s) {
             return function () {
                 var n = s.replace(/[^\d\+\-]/g, "");
-                if (n.length) { 
+                if (n.length) {
                     // parse offset into iso8601 parts
                     var zp = n.match(/(\+|-)(\d{2})(\d{2})?/);
                     // minute offsets must be converted to base of 100
                     var mo = parseInt((parseInt(zp[3]) || 0) / .6).toString();
                     mo = mo.length < 2 ? "0" + mo : mo;
                     this.timezoneOffset = zp[1] + zp[2] + mo;
-                } else { 
-                    this.timezone = s.toLowerCase(); 
+                } else {
+                    this.timezone = s.toLowerCase();
                 }
             };
         },
-        day: function (x) { 
+        day: function (x) {
             var s = x[0];
-            return function () { 
-                this.day = Number(s.match(/\d+/)[0]); 
+            return function () {
+                this.day = Number(s.match(/\d+/)[0]);
             };
-        }, 
+        },
         month: function (s) {
             return function () {
                 this.month = (s.length == 3) ? "jan feb mar apr may jun jul aug sep oct nov dec".indexOf(s)/4 : Number(s) - 1;
@@ -539,40 +539,40 @@
             var $C = Date.getCultureInfo();
             return function () {
                 var n = Number(s);
-                this.year = ((s.length > 2) ? n : 
-                    (n + (((n + 2000) < $C.twoDigitYearMax) ? 2000 : 1900))); 
+                this.year = ((s.length > 2) ? n :
+                    (n + (((n + 2000) < $C.twoDigitYearMax) ? 2000 : 1900)));
             };
         },
-        rday: function (s) { 
+        rday: function (s) {
             return function () {
                 switch (s) {
-                case "yesterday": 
+                case "yesterday":
                     this.days = -1;
                     break;
-                case "tomorrow":  
+                case "tomorrow":
                     this.days = 1;
                     break;
-                case "today": 
+                case "today":
                     this.days = 0;
                     break;
-                case "now": 
-                    this.days = 0; 
-                    this.now = true; 
+                case "now":
+                    this.days = 0;
+                    this.now = true;
                     break;
                 }
             };
         },
-        finishExact: function (x) {  
-            x = (x instanceof Array) ? x : [ x ]; 
+        finishExact: function (x) {
+            x = (x instanceof Array) ? x : [ x ];
 
-            for (var i = 0 ; i < x.length ; i++) { 
-                if (x[i]) { 
-                    x[i].call(this); 
+            for (var i = 0 ; i < x.length ; i++) {
+                if (x[i]) {
+                    x[i].call(this);
                 }
             }
-            
+
             var now = new Date();
-            
+
             if ((this.hour || this.minute) && (!this.month && !this.year && !this.day)) {
                 this.day = now.getDate();
             }
@@ -580,19 +580,19 @@
             if (!this.year) {
                 this.year = now.getFullYear();
             }
-            
+
             if (!this.month && this.month !== 0) {
                 this.month = now.getMonth();
             }
-            
+
             if (!this.day) {
                 this.day = 1;
             }
-            
+
             if (!this.hour) {
                 this.hour = 0;
             }
-            
+
             if (!this.minute) {
                 this.minute = 0;
             }
@@ -612,7 +612,7 @@
                     this.hour = 0;
                 }
             }
-            
+
             if (this.day > $D.getDaysInMonth(this.year, this.month)) {
                 throw new RangeError(this.day + " is not a valid value for days.");
             }
@@ -624,37 +624,37 @@
             } else if (this.timezoneOffset) {
                 r.setTimezoneOffset(this.timezoneOffset);
             }
-            
+
             return r;
-        },			
+        },
         finish: function (x) {
             x = (x instanceof Array) ? flattenAndCompact(x) : [ x ];
 
-            if (x.length === 0) { 
-                return null; 
+            if (x.length === 0) {
+                return null;
             }
 
-            for (var i = 0 ; i < x.length ; i++) { 
+            for (var i = 0 ; i < x.length ; i++) {
                 if (typeof x[i] == "function") {
-                    x[i].call(this); 
+                    x[i].call(this);
                 }
             }
-            
+
             var today = $D.today();
-            
+
             // For parsing: "now"
-            if (this.now && !this.unit && !this.operator) { 
-                return new Date(); 
+            if (this.now && !this.unit && !this.operator) {
+                return new Date();
             } else if (this.now) {
                 today = new Date();
             }
-            
+
             var expression = !!(this.days && this.days !== null || this.orient || this.operator || this.bias);
             var realExpression = !!(this.days && this.days !== null || this.orient || this.operator);
-            
+
             var gap, mod, orient;
             orient = ((this.orient == "past" || this.operator == "subtract" || this.bias == "past") ? -1 : 1);
-            
+
             // For parsing: "last second", "next minute", "previous hour", "+5 seconds",
             //   "-5 hours", "5 hours", "7 hours ago"
             if(!this.now && "hour minute second".indexOf(this.unit) != -1) {
@@ -668,7 +668,7 @@
                 this.month = null;
                 expression = true;
             }
-            
+
             // For parsing: "monday @ 8pm", "12p on monday", "Friday"
             if (!expression && this.weekday && !this.day && !this.days) {
                 var temp = Date[this.weekday]();
@@ -678,7 +678,7 @@
                 }
                 this.year = temp.getFullYear();
             }
-            
+
             // For parsing: "prev thursday", "next friday", "last friday at 20:00"
             if (expression && this.weekday && this.unit != "month") {
                 this.unit = "day";
@@ -735,7 +735,7 @@
                     this.hour = 0;
                 }
             }
-            
+
             // For parsing: "3 months ago saturday at 5:00 pm" (does not actually parse)
             if (this.weekday && !this.day && !this.days) {
                 var temp = Date[this.weekday]();
@@ -744,12 +744,12 @@
                     this.month = temp.getMonth();
                 }
             }
-            
+
             // For parsing: "July 2004", "1997-07", "2008/10", "november"
-            if ((this.month || this.month === 0) && !this.day) { 
-                this.day = 1; 
+            if ((this.month || this.month === 0) && !this.day) {
+                this.day = 1;
             }
-            
+
             // For parsing: "3 weeks" (does not actually parse)
             if (!this.orient && !this.operator && this.unit == "week" && this.value && !this.day && !this.month) {
                 return Date.today().setWeek(this.value);
@@ -789,18 +789,18 @@
 
     var _ = $D.Parsing.Operators, g = $D.Grammar, t = $D.Translator, _fn;
 
-    g.datePartDelimiter = _.rtoken(/^([\s\-\.\,\/\x27]+)/); 
+    g.datePartDelimiter = _.rtoken(/^([\s\-\.\,\/\x27]+)/);
     g.timePartDelimiter = _.stoken(":");
     g.whiteSpace = _.rtoken(/^\s*/);
     g.generalDelimiter = _.rtoken(/^(([\s\,]|at|@|on)+)/);
-  
+
     var _C = {};
     g.ctoken = function (keys) {
         var fn = _C[keys];
         var $C = Date.getCultureInfo();
         if (! fn) {
             var c = $C.regexPatterns;
-            var kx = keys.split(/\s+/), px = []; 
+            var kx = keys.split(/\s+/), px = [];
             for (var i = 0; i < kx.length ; i++) {
                 px.push(_.replace(_.rtoken(c[kx[i]]), kx[i]));
             }
@@ -808,7 +808,7 @@
         }
         return fn;
     };
-    g.ctoken2 = function (key) { 
+    g.ctoken2 = function (key) {
         var $C = Date.getCultureInfo();
         return _.rtoken($C.regexPatterns[key]);
     };
@@ -828,26 +828,26 @@
     //g.fff = _.cache(_.process(_.rtoken(/^[0-9]{3}(?!\d)/), t.millisecond));
     g.fff = _.cache(_.process(_.rtoken(/^([0-9]{3})(\d{3})?/), t.millisecond));
     g.hms = _.cache(_.sequence([g.H, g.m, g.s], g.timePartDelimiter));
-  
+
     // _.min(1, _.set([ g.H, g.m, g.s ], g._t));
     g.t = _.cache(_.process(g.ctoken2("shortMeridian"), t.meridian));
     g.tt = _.cache(_.process(g.ctoken2("longMeridian"), t.meridian));
     g.z = _.cache(_.process(_.rtoken(/^(Z|z)|((\+|\-)\s*\d\d\d\d)|((\+|\-)\d\d(\:?\d\d)?)/), t.timezone));
-    
+
     g.zzz = _.cache(_.process(g.ctoken2("timezone"), t.timezone));
     g.timeSuffix = _.each(_.ignore(g.whiteSpace), _.set([ g.tt, g.zzz ]));
     g.time = _.each(_.optional(_.ignore(_.stoken("T"))), g.hms, g.timeSuffix);
-    	  
+
     // days, months, years
-    g.d = _.cache(_.process(_.each(_.rtoken(/^([0-2]\d|3[0-1]|\d)/), 
+    g.d = _.cache(_.process(_.each(_.rtoken(/^([0-2]\d|3[0-1]|\d)/),
         _.optional(g.ctoken2("ordinalSuffix"))), t.day));
-    g.dd = _.cache(_.process(_.each(_.rtoken(/^([0-2]\d|3[0-1])/), 
+    g.dd = _.cache(_.process(_.each(_.rtoken(/^([0-2]\d|3[0-1])/),
         _.optional(g.ctoken2("ordinalSuffix"))), t.day));
-    g.ddd = g.dddd = _.cache(_.process(g.ctoken("sun mon tue wed thu fri sat"), 
-        function (s) { 
-            return function () { 
-                this.weekday = s; 
-            }; 
+    g.ddd = g.dddd = _.cache(_.process(g.ctoken("sun mon tue wed thu fri sat"),
+        function (s) {
+            return function () {
+                this.weekday = s;
+            };
         }
     ));
     g.M = _.cache(_.process(_.rtoken(/^(1[0-2]|0\d|\d)/), t.month));
@@ -858,61 +858,61 @@
     g.yy = _.cache(_.process(_.rtoken(/^(\d\d)/), t.year));
     g.yyy = _.cache(_.process(_.rtoken(/^(\d\d?\d?\d?)/), t.year));
     g.yyyy = _.cache(_.process(_.rtoken(/^(\d\d\d\d)/), t.year));
-	
-	// rolling these up into general purpose rules
-    _fn = function () { 
+
+    // rolling these up into general purpose rules
+    _fn = function () {
         return _.each(_.any.apply(null, arguments), _.not(g.ctoken2("timeContext")));
     };
-    
-    g.day = _fn(g.d, g.dd); 
-    g.month = _fn(g.M, g.MMM); 
+
+    g.day = _fn(g.d, g.dd);
+    g.month = _fn(g.M, g.MMM);
     g.year = _fn(g.yyyy, g.yy);
 
     // relative date / time expressions
-    g.orientation = _.process(g.ctoken("past future"), 
-        function (s) { 
-            return function () { 
-                this.orient = s; 
-            }; 
+    g.orientation = _.process(g.ctoken("past future"),
+        function (s) {
+            return function () {
+                this.orient = s;
+            };
         }
     );
-    g.operator = _.process(g.ctoken("add subtract"), 
-        function (s) { 
-            return function () { 
-                this.operator = s; 
-            }; 
+    g.operator = _.process(g.ctoken("add subtract"),
+        function (s) {
+            return function () {
+                this.operator = s;
+            };
         }
-    );  
+    );
     g.rday = _.process(g.ctoken("yesterday tomorrow today now"), t.rday);
-    g.unit = _.process(g.ctoken("second minute hour day week month year"), 
-        function (s) { 
-            return function () { 
-                this.unit = s; 
-            }; 
+    g.unit = _.process(g.ctoken("second minute hour day week month year"),
+        function (s) {
+            return function () {
+                this.unit = s;
+            };
         }
     );
-    g.value = _.process(_.rtoken(/^\d\d?(st|nd|rd|th)?/), 
-        function (s) { 
-            return function () { 
-                this.value = s.replace(/\D/g, ""); 
-            }; 
+    g.value = _.process(_.rtoken(/^\d\d?(st|nd|rd|th)?/),
+        function (s) {
+            return function () {
+                this.value = s.replace(/\D/g, "");
+            };
         }
     );
     g.expression = _.set([ g.rday, g.operator, g.value, g.unit, g.orientation, g.ddd, g.MMM ]);
 
     // pre-loaded rules for different date part order preferences
-    _fn = function () { 
-        return  _.set(arguments, g.datePartDelimiter); 
+    _fn = function () {
+        return  _.set(arguments, g.datePartDelimiter);
     };
     g.mdy = _fn(g.ddd, g.month, g.day, g.year);
     g.ymd = _fn(g.ddd, g.year, g.month, g.day);
     g.dmy = _fn(g.ddd, g.day, g.month, g.year);
-    g.date = function (s) { 
+    g.date = function (s) {
         var $C = Date.getCultureInfo();
         return ((g[$C.dateElementOrder] || g.mdy).call(this, s));
-    }; 
+    };
 
-    // parsing date format specifiers - ex: "h:m:s tt" 
+    // parsing date format specifiers - ex: "h:m:s tt"
     // this little guy will generate a custom parser based
     // on the format string, ex: g.format("h:m:s tt")
     g.format = _.process(_.many(
@@ -920,58 +920,58 @@
         // translate format specifiers into grammar rules
         _.process(
         _.rtoken(/^(dd?d?d?|MM?M?M?|yy?y?y?|hh?|HH?|mm?|ss?|fff|tt?|zz?z?)/),
-        function (fmt) { 
-        if (g[fmt]) { 
-            return g[fmt]; 
-        } else { 
-            throw $D.Parsing.Exception(fmt); 
+        function (fmt) {
+        if (g[fmt]) {
+            return g[fmt];
+        } else {
+            throw $D.Parsing.Exception(fmt);
         }
     }
     ),
     // translate separator tokens into token rules
     _.process(
     _.rtoken(/^[^dMyhHmsftz]+/), // all legal separators
-        function (s) { 
-            return _.ignore(_.stoken(s)); 
-        } 
+        function (s) {
+            return _.ignore(_.stoken(s));
+        }
     )
-    )), 
+    )),
         // construct the parser ...
-        function (rules) { 
-            return _.process(_.each.apply(null, rules), t.finishExact); 
+        function (rules) {
+            return _.process(_.each.apply(null, rules), t.finishExact);
         }
     );
-    
+
     var _F = {
-		//"M/d/yyyy": function (s) { 
-		//	var m = s.match(/^([0-2]\d|3[0-1]|\d)\/(1[0-2]|0\d|\d)\/(\d\d\d\d)/);
-		//	if (m!=null) { 
-		//		var r =  [ t.month.call(this,m[1]), t.day.call(this,m[2]), t.year.call(this,m[3]) ];
-		//		r = t.finishExact.call(this,r);
-		//		return [ r, "" ];
-		//	} else {
-		//		throw new Date.Parsing.Exception(s);
-		//	}
-		//}
-		//"M/d/yyyy": function (s) { return [ new Date(Date._parse(s)), ""]; }
-	}; 
-    var _get = function (f) { 
-        return _F[f] = (_F[f] || g.format(f)[0]);      
+        //"M/d/yyyy": function (s) {
+        //    var m = s.match(/^([0-2]\d|3[0-1]|\d)\/(1[0-2]|0\d|\d)\/(\d\d\d\d)/);
+        //    if (m!=null) {
+        //        var r =  [ t.month.call(this,m[1]), t.day.call(this,m[2]), t.year.call(this,m[3]) ];
+        //        r = t.finishExact.call(this,r);
+        //        return [ r, "" ];
+        //    } else {
+        //        throw new Date.Parsing.Exception(s);
+        //    }
+        //}
+        //"M/d/yyyy": function (s) { return [ new Date(Date._parse(s)), ""]; }
     };
-  
+    var _get = function (f) {
+        return _F[f] = (_F[f] || g.format(f)[0]);
+    };
+
     g.formats = function (fx) {
         if (fx instanceof Array) {
-            var rx = []; 
+            var rx = [];
             for (var i = 0 ; i < fx.length ; i++) {
-                rx.push(_get(fx[i])); 
+                rx.push(_get(fx[i]));
             }
             return _.any.apply(null, rx);
-        } else { 
-            return _get(fx); 
+        } else {
+            return _get(fx);
         }
     };
 
-	// check for these formats first
+    // check for these formats first
     g._formats = g.formats([
         "\"yyyy-MM-ddTHH:mm:ss.fffz\"",
         "yyyy-MM-ddTHH:mm:ss.fffz",
@@ -995,17 +995,17 @@
         "d"
     ]);
 
-	// starting rule for general purpose grammar
-    g._start = _.process(_.set([ g.date, g.time, g.expression ], 
+    // starting rule for general purpose grammar
+    g._start = _.process(_.set([ g.date, g.time, g.expression ],
         g.generalDelimiter, g.whiteSpace), t.finish);
-	
-	// real starting rule: tries selected formats first, 
-	// then general purpose rule
+
+    // real starting rule: tries selected formats first,
+    // then general purpose rule
     g.start = function (s, o) {
-        try { 
-            var r = g._formats.call({}, s); 
+        try {
+            var r = g._formats.call({}, s);
             if (r[1].length === 0) {
-                return r; 
+                return r;
             }
         } catch (e) {}
         if (!o) {
@@ -1014,12 +1014,12 @@
         o.input = s;
         return g._start.call(o, s);
     };
-	
-	$D._parse = $D.parse;
+
+    $D._parse = $D.parse;
 
     /**
      * Converts the specified string value into its JavaScript Date equivalent using CultureInfo specific format information.
-     * 
+     *
      * Example
     <pre><code>
     ///////////
@@ -1097,7 +1097,7 @@
     var d1 = Date.parse("today - 1 year");
 
     // Today - 1 year
-    var d1 = Date.parse("t-1y"); 
+    var d1 = Date.parse("t-1y");
 
 
     /////////////////////////////
@@ -1119,9 +1119,9 @@
      * @return {Date}    A Date object or null if the string cannot be converted into a Date.
      */
     $D.parse = function (s, o) {
-        var r = null; 
-        if (!s) { 
-            return null; 
+        var r = null;
+        if (!s) {
+            return null;
         }
         if (s instanceof Date) {
             return s;
@@ -1141,19 +1141,19 @@
         var fn = $D.Grammar.formats(fx);
         return function (s) {
             var r = null;
-            try { 
-                r = fn.call({}, s); 
-            } catch (e) { 
-                return null; 
+            try {
+                r = fn.call({}, s);
+            } catch (e) {
+                return null;
             }
             return ((r[1].length === 0) ? r[0] : null);
         };
     };
-    
+
     /**
      * Converts the specified string value into its JavaScript Date equivalent using the specified format {String} or formats {Array} and the CultureInfo specific format information.
      * The format of the string value must match one of the supplied formats exactly.
-     * 
+     *
      * Example
     <pre><code>
     // 15-Oct-2004
@@ -1173,7 +1173,7 @@
      * @param {Object}   The expected format {String} or an array of expected formats {Array} of the date string [Required].
      * @return {Date}    A Date object or null if the string cannot be converted into a Date.
      */
-    $D.parseExact = function (s, fx) { 
-        return $D.getParseFunction(fx)(s); 
-    };	
+    $D.parseExact = function (s, fx) {
+        return $D.getParseFunction(fx)(s);
+    };
 }());

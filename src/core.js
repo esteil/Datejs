@@ -675,7 +675,7 @@
          * @return {String}  ISO 8601 string of date
          */
         $P.toISOString = function () {
-            // From http://www.json.org/json.js. Public Domain. 
+            // From http://www.json.org/json.js. Public Domain.
             function f(n) {
                 return n < 10 ? '0' + n : n;
             }
@@ -777,7 +777,7 @@
         $CI = $CI || Date.getCultureInfo(); // Default to Date.CultureInfo
 
         // Standard Date and Time Format Strings. Formats pulled from CultureInfo file and
-        // may vary by culture. 
+        // may vary by culture.
         if (format && format.length == 1) {
             var c = $CI.formatPatterns;
             x.t = x.toString;

@@ -2,7 +2,7 @@ if ( !Date.AvailableCultureInfo )
         Date.AvailableCultureInfo = {};
 
 Date.AvailableCultureInfo["ru-RU"] = {
-	/* Culture Name */
+    /* Culture Name */
     name: "ru-RU",
     englishName: "Russian (Russia)",
     nativeName: "русский (Россия)",

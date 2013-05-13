@@ -2,36 +2,36 @@ if ( !Date.AvailableCultureInfo )
         Date.AvailableCultureInfo = {};
 
 Date.AvailableCultureInfo["uz-Cyrl-UZ"] = {
-	/* Culture Name */
+    /* Culture Name */
     name: "uz-Cyrl-UZ",
     englishName: "Uzbek (Cyrillic, Uzbekistan)",
     nativeName: "Ўзбек (Ўзбекистон)",
-    
+
     /* Day Name Strings */
     dayNames: ["якшанба", "душанба", "сешанба", "чоршанба", "пайшанба", "жума", "шанба"],
     abbreviatedDayNames: ["якш", "дш", "сш", "чш", "пш", "ж", "ш"],
     shortestDayNames: ["якш", "дш", "сш", "чш", "пш", "ж", "ш"],
     firstLetterDayNames: ["я", "д", "с", "ч", "п", "ж", "ш"],
-    
+
     /* Month Name Strings */
     monthNames: ["Январ", "Феврал", "Март", "Апрел", "Май", "Июн", "Июл", "Август", "Сентябр", "Октябр", "Ноябр", "Декабр"],
     abbreviatedMonthNames: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
 
-	/* AM/PM Designators */
+    /* AM/PM Designators */
     amDesignator: "",
     pmDesignator: "",
 
     firstDayOfWeek: 1,
     twoDigitYearMax: 2029,
-    
+
     /**
-     * The dateElementOrder is based on the order of the 
-     * format specifiers in the formatPatterns.DatePattern. 
+     * The dateElementOrder is based on the order of the
+     * format specifiers in the formatPatterns.DatePattern.
      *
      * Example:
      <pre>
      shortDatePattern    dateElementOrder
-     ------------------  ---------------- 
+     ------------------  ----------------
      "M/d/yyyy"          "mdy"
      "dd/MM/yyyy"        "dmy"
      "yyyy-MM-dd"        "ymd"
@@ -42,7 +42,7 @@ Date.AvailableCultureInfo["uz-Cyrl-UZ"] = {
      * string being parsed.
      */
     dateElementOrder: "dmy",
-    
+
     /* Standard date and time format patterns */
     formatPatterns: {
         shortDate: "dd.MM.yyyy",
@@ -59,31 +59,31 @@ Date.AvailableCultureInfo["uz-Cyrl-UZ"] = {
 
     /**
      * NOTE: If a string format is not parsing correctly, but
-     * you would expect it parse, the problem likely lies below. 
-     * 
+     * you would expect it parse, the problem likely lies below.
+     *
      * The following regex patterns control most of the string matching
      * within the parser.
-     * 
+     *
      * The Month name and Day name patterns were automatically generated
-     * and in general should be (mostly) correct. 
+     * and in general should be (mostly) correct.
      *
      * Beyond the month and day name patterns are natural language strings.
      * Example: "next", "today", "months"
      *
-     * These natural language string may NOT be correct for this culture. 
+     * These natural language string may NOT be correct for this culture.
      * If they are not correct, please translate and edit this file
-     * providing the correct regular expression pattern. 
+     * providing the correct regular expression pattern.
      *
      * If you modify this file, please post your revised CultureInfo file
      * to the Datejs Forum located at http://www.datejs.com/forums/.
      *
      * Please mark the subject of the post with [CultureInfo]. Example:
      *    Subject: [CultureInfo] Translated "da-DK" Danish(Denmark)
-     * 
+     *
      * We will add the modified patterns to the master source files.
      *
-     * As well, please review the list of "Future Strings" section below. 
-     */	
+     * As well, please review the list of "Future Strings" section below.
+     */
     regexPatterns: {
         jan: /^янв(ар)?/i,
         feb: /^фев(рал)?/i,
@@ -110,21 +110,21 @@ Date.AvailableCultureInfo["uz-Cyrl-UZ"] = {
         past: /^last|past|prev(ious)?/i,
         add: /^(\+|aft(er)?|from|hence)/i,
         subtract: /^(\-|bef(ore)?|ago)/i,
-        
+
         yesterday: /^yes(terday)?/i,
         today: /^t(od(ay)?)?/i,
         tomorrow: /^tom(orrow)?/i,
         now: /^n(ow)?/i,
-        
+
         millisecond: /^ms|milli(second)?s?/i,
         second: /^sec(ond)?s?/i,
         minute: /^mn|min(ute)?s?/i,
-		hour: /^h(our)?s?/i,
-		week: /^w(eek)?s?/i,
+        hour: /^h(our)?s?/i,
+        week: /^w(eek)?s?/i,
         month: /^m(onth)?s?/i,
         day: /^d(ay)?s?/i,
         year: /^y(ear)?s?/i,
-		
+
         shortMeridian: /^(a|p)/i,
         longMeridian: /^(a\.?m?\.?|p\.?m?\.?)/i,
         timezone: /^((e(s|d)t|c(s|d)t|m(s|d)t|p(s|d)t)|((gmt)?\s*(\+|\-)\s*\d\d\d\d?)|gmt|utc)/i,
@@ -132,18 +132,18 @@ Date.AvailableCultureInfo["uz-Cyrl-UZ"] = {
         timeContext: /^\s*(\:|a(?!u|p)|p)/i
     },
 
-	timezones: [{name:"UTC", offset:"-000"}, {name:"GMT", offset:"-000"}, {name:"EST", offset:"-0500"}, {name:"EDT", offset:"-0400"}, {name:"CST", offset:"-0600"}, {name:"CDT", offset:"-0500"}, {name:"MST", offset:"-0700"}, {name:"MDT", offset:"-0600"}, {name:"PST", offset:"-0800"}, {name:"PDT", offset:"-0700"}]
+    timezones: [{name:"UTC", offset:"-000"}, {name:"GMT", offset:"-000"}, {name:"EST", offset:"-0500"}, {name:"EDT", offset:"-0400"}, {name:"CST", offset:"-0600"}, {name:"CDT", offset:"-0500"}, {name:"MST", offset:"-0700"}, {name:"MDT", offset:"-0600"}, {name:"PST", offset:"-0800"}, {name:"PDT", offset:"-0700"}]
 };
 
 /********************
  ** Future Strings **
  ********************
- * 
- * The following list of strings may not be currently being used, but 
- * may be incorporated into the Datejs library later. 
+ *
+ * The following list of strings may not be currently being used, but
+ * may be incorporated into the Datejs library later.
  *
  * We would appreciate any help translating the strings below.
- * 
+ *
  * If you modify this file, please post your revised CultureInfo file
  * to the Datejs Forum located at http://www.datejs.com/forums/.
  *
