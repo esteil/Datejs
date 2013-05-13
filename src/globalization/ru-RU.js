@@ -1,5 +1,8 @@
-Date.CultureInfo = {
-    /* Culture Name */
+if ( !Date.AvailableCultureInfo )
+        Date.AvailableCultureInfo = {};
+
+Date.AvailableCultureInfo["ru-RU"] = {
+	/* Culture Name */
     name: "ru-RU",
     englishName: "Russian (Russia)",
     nativeName: "русский (Россия)",
@@ -193,3 +196,5 @@ Date.CultureInfo = {
  * long                long
  * short               short
  */
+if ( !Date.CultureInfo )
+    Date.CultureInfo = Date.AvailableCultureInfo["ru-RU"];
