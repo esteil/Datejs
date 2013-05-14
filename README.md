@@ -1,6 +1,8 @@
-# Fork of date.js #
+# Fork of the fork of date.js #
 
+I noticed some missing translations and thought about adding them, but saw that eric's last changes were made 5 months ago. So, here goes a fork with many other forks merged in. I'm not entirely sure if I just completely broke it.
 
+# eric's README.md #
 
 ## What's the deal with this fork? ##
 
