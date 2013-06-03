@@ -3,6 +3,9 @@ I noticed some missing translations and thought about adding them, but saw that 
 
 The original code was released by Coolite, then modified by many contributors at GitHub.
 
+## Changes ##
+* The project files are now written in CoffeeScript for easier reading and compiling.
+
 ## Usage ##
 
 ## License ##
