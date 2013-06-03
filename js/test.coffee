@@ -1,22 +1,22 @@
 messages = ["Nope", "Keep Trying", "Nadda", "Sorry", "No one's home", "Arg", "Bummer", "Faux pas", "Whoops", "Snafu", "Blunder"]
 input = $("input.test")
-input_empty = "*Enter a date (or time) here"
 output = $("p.test.output")
-output_empty = "Type a date above"
+output_empty = "…"
 
-input.val input_empty
 output.text output_empty
 
 input.keyup (e) ->
-  output.removeClass()
+  output.removeClass().addClass 'test output'
   if input.val().length > 0
-    date = Date.parse(input.val())
+    date = Date.parse input.val()
     if date isnt null
-      input.removeClass()
-      output.addClass("accept").text date.toString("dddd, MMMM dd, yyyy h:mm:ss tt")
+      input.removeClass().addClass 'test'
+      output.addClass 'accept'
+      output.text date.toString("dddd, MMMM dd, yyyy h:mm:ss tt")
     else
-      input.addClass "validate_error"
-      output.addClass("error").text messages[Math.round(messages.length * Math.random())] + "..."
+      input.addClass 'validate_error'
+      output.addClass 'error'
+      output.text messages[Math.round(messages.length * Math.random())] + '…'
   else
-    output.text = output_empty
-    output.addClass "empty"
+    output.text output_empty
+    output.addClass 'empty'
