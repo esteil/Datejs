@@ -52,7 +52,9 @@ as the object that is parsed to set defaults.
 To enable biasing, set the `bias` property to either `past` or `future`. For
 example:
 
+  ```javascript
     Date.parse('3pm', { bias: 'future' })
+  ```
 
 
 ## Original README.txt ##

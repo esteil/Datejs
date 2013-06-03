@@ -6,10 +6,12 @@ TODO
 
 	If a date was 3 days and 5 hours away from now, the TimeSpan getFriendly() function would return the following.
 	
+    ```javascript
 	var future = new Date().add({days: 3, hours: 5});
 	var ts = new TimeSpan(future - new Date());
 	
 	console.log(ts.getFriendly()); // "3 days and 5 hours from now"
+    ```
 	
 3.	More tests!
 
@@ -32,6 +34,7 @@ They are documented here for reference.
 	
 2.  Date.prototype.getQuarter()
 
+    ```javascript
     /**
      * Get the Year Quarter number for the currect date instance.
      * @return {Number}  1 to 4
@@ -39,11 +42,13 @@ They are documented here for reference.
     $P.getQuarter = function () {
         return Math.ceil((this.getMonth() + 1)/3);
     }; 
+    ```
 
 3.  Date.isDate(). Please use "instanceof".
 
 	Example
 	
+    ```javascript
 	var d1 = null;
 	d1 = Date.today();
 	console.log(d1 instanceof Date);
@@ -55,9 +60,11 @@ They are documented here for reference.
     $D.isDate = function (obj) {
         return (obj instanceof Date);
     };
+    ```
 
     Another Version...
 
+    ```javascript
     /** 
      * Determines if an object is a Date object.
      * @return {Boolean} true if object is a Date, otherwise false.
@@ -65,3 +72,4 @@ They are documented here for reference.
     $D.isDate = function (obj) {
         return (obj !== null) ? obj.constructor.toString().match(/Date/i) == "Date" : false;
     };
+    ```
