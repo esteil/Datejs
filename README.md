@@ -1,6 +1,14 @@
-# Fork of the fork of date.js #
-
+# Date.js #
 I noticed some missing translations and thought about adding them, but saw that eric's last changes were made 5 months ago. So, here goes a fork with many other forks merged in. I'm not entirely sure if I just completely broke it.
+
+## Usage ##
+
+## License ##
+The original code was released by Coolite, then modified by many contributors at GitHub.
+
+The MIT License (http://www.opensource.org/licenses/mit-license.php)
+Copyright (c) 2006-2008 Coolite Inc. (http://www.coolite.com/)
+Copyright (c) 2011-2013 [GitHub contributors] (https://github.com/kriswema/Datejs/contributors)
 
 # eric's README.md #
 
