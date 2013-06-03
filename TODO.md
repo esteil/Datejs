@@ -4,72 +4,72 @@ TODO
 
 2. Add .getFriendly() to TimeSpan and TimePeriod. Example
 
-	If a date was 3 days and 5 hours away from now, the TimeSpan getFriendly() function would return the following.
-	
+    If a date was 3 days and 5 hours away from now, the TimeSpan getFriendly() function would return the following.
+
     ```javascript
-	var future = new Date().add({days: 3, hours: 5});
-	var ts = new TimeSpan(future - new Date());
-	
-	console.log(ts.getFriendly()); // "3 days and 5 hours from now"
+      var future = new Date().add({days: 3, hours: 5});
+      var ts = new TimeSpan(future - new Date());
+
+      console.log(ts.getFriendly()); // "3 days and 5 hours from now"
     ```
-	
-3.	More tests!
 
-4.	Test for changing locale at runtime
+3.  More tests!
 
-5.	Test for multiple locale file loading
+4.  Test for changing locale at runtime
+
+5.  Test for multiple locale file loading
 
 
 CUTTING ROOM FLOOR
 -------------------
 
 The following items were at one time tested for inclusion into the library, but were cut.
-They are documented here for reference. 
+They are documented here for reference.
 
 1.  Removed <static> Date.now() because of potential collision with the future ECMA 4 spec, which will include a Date.now() function.
 
-2.  Removed <static> Date.getDayName(dayOfWeek). Please use Date.CultureInfo.dayNames[dayOfWeek]. 
+2.  Removed <static> Date.getDayName(dayOfWeek). Please use Date.CultureInfo.dayNames[dayOfWeek].
 
-3.  Removed <static> Date.getMonthName(month). Please use Date.CultureInfo.monthNames[month]. 
-	
+3.  Removed <static> Date.getMonthName(month). Please use Date.CultureInfo.monthNames[month].
+
 2.  Date.prototype.getQuarter()
 
     ```javascript
-    /**
-     * Get the Year Quarter number for the currect date instance.
-     * @return {Number}  1 to 4
-     */
-    $P.getQuarter = function () {
-        return Math.ceil((this.getMonth() + 1)/3);
-    }; 
+      /**
+       * Get the Year Quarter number for the currect date instance.
+       * @return {Number}  1 to 4
+       */
+      $P.getQuarter = function () {
+          return Math.ceil((this.getMonth() + 1)/3);
+      };
     ```
 
 3.  Date.isDate(). Please use "instanceof".
 
-	Example
-	
-    ```javascript
-	var d1 = null;
-	d1 = Date.today();
-	console.log(d1 instanceof Date);
+    Example
 
-    /** 
-     * Determines if an object is a Date object.
-     * @return {Boolean} true if object is a Date, otherwise false.
-     */ 
-    $D.isDate = function (obj) {
-        return (obj instanceof Date);
-    };
+    ```javascript
+      var d1 = null;
+      d1 = Date.today();
+      console.log(d1 instanceof Date);
+
+      /**
+       * Determines if an object is a Date object.
+       * @return {Boolean} true if object is a Date, otherwise false.
+       */
+      $D.isDate = function (obj) {
+          return (obj instanceof Date);
+      };
     ```
 
     Another Version...
 
     ```javascript
-    /** 
-     * Determines if an object is a Date object.
-     * @return {Boolean} true if object is a Date, otherwise false.
-     */ 
-    $D.isDate = function (obj) {
-        return (obj !== null) ? obj.constructor.toString().match(/Date/i) == "Date" : false;
-    };
+      /**
+       * Determines if an object is a Date object.
+       * @return {Boolean} true if object is a Date, otherwise false.
+       */
+      $D.isDate = function (obj) {
+          return (obj !== null) ? obj.constructor.toString().match(/Date/i) == "Date" : false;
+      };
     ```
