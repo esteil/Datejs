@@ -35,16 +35,4 @@
     }
   });
 
-  input.focus(function(e) {
-    if (input.val() === input_empty) {
-      return input.val("");
-    }
-  });
-
-  input.blur(function(e) {
-    if (input.val() === "") {
-      return input.val(input_empty).removeClass();
-    }
-  });
-
 }).call(this);

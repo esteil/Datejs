@@ -20,9 +20,3 @@ input.keyup (e) ->
   else
     output.text = output_empty
     output.addClass "empty"
-
-input.focus (e) ->
-  input.val ""  if input.val() is input_empty
-
-input.blur (e) ->
-  input.val(input_empty).removeClass()  if input.val() is ""
