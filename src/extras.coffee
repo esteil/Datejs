@@ -220,8 +220,7 @@
           t "MMMM"
         when "m", "%m"
           t "MM"
-        when "M", "%b"
-      , "%h"
+        when "M", "%b", "%h"
           t "MMM"
         when "n"
           t "M"
@@ -262,9 +261,7 @@
         when "P"
           y = x.getUTCOffset()
           y.substring(0, y.length - 2) + ":" + y.substring(y.length - 2)
-        when "e", "T"
-      , "%z"
-      , "%Z"
+        when "e", "T", "%z", "%Z"
           x.getTimezone()
         when "Z"
           x.getTimezoneOffset() * -60

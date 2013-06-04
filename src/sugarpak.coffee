@@ -401,7 +401,7 @@ SugarPak - Domain Specific Language -  Syntactical Sugar **
       if @_same
         @_same = @_is = false
         o1 = @toObject()
-        o2 = (arguments_[0] or new Date()).toObject()
+        o2 = (arguments[0] or new Date()).toObject()
         v = ""
         k = j.toLowerCase()
         m = (px.length - 1)
@@ -435,7 +435,7 @@ SugarPak - Domain Specific Language -  Syntactical Sugar **
   $P._ss = ef("Second")
   nthfn = (n) ->
     (dayOfWeek) ->
-      return @_ss(arguments_[0])  if @_same
+      return @_ss(arguments[0])  if @_same
       return @moveToNthOccurrence(dayOfWeek, n)  if dayOfWeek or dayOfWeek is 0
       @_nth = n
 

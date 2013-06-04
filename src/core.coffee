@@ -569,9 +569,7 @@
     $D.getTimezoneAbbreviation @getUTCOffset()
 
   $P.setTimezoneOffset = (offset) ->
-    here = @getTimezoneOffset()
-    there = Number(offset) * -6 / 10
-    @addMinutes there - here
+    @addMinutes Number(offset) * -6 / 10 - @getTimezoneOffset()
 
   $P.setTimezone = (offset) ->
     @setTimezoneOffset $D.getTimezoneOffset(offset)
@@ -746,8 +744,7 @@
           return x.t(c.yearMonth, options)
     ord = (n) ->
       switch n * 1
-        when 1, 21
-      , 31
+        when 1, 21, 31
           "st"
         when 2, 22
           "nd"

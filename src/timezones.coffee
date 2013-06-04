@@ -11,10 +11,12 @@
 
     # If timezone is specified, get the correct timezone info based on the Date given
     if tz
-      res = (if tz is "Etc/UTC" or tz is "Etc/GMT" then
-        tzOffset: 0
-        tzAbbr: "UTC"
-       else timezoneJS.timezone.getTzInfo(date, tz))
+      if tz is "Etc/UTC" or tz is "Etc/GMT"
+        res =
+          tzOffset: 0
+          tzAbbr: "UTC"
+      else
+        res = timezoneJS.timezone.getTzInfo date, tz
 
     # If no timezone was specified, use the local browser offset
     else
@@ -40,10 +42,13 @@
 
     # If timezone is specified, get the correct timezone info based on the Date given
     if @timezone
-      res = (if @timezone is "Etc/UTC" or @timezone is "Etc/GMT" then
-        tzOffset: 0
-        tzAbbr: "UTC"
-       else timezoneJS.timezone.getTzInfo(this, @timezone))
+      if @timezone is "Etc/UTC" or @timezone is "Etc/GMT"
+        res =
+          tzOffset: 0
+          tzAbbr: "UTC"
+      else
+        res =
+          timezoneJS.timezone.getTzInfo(this, @timezone)
 
     # If no timezone was specified, use the local browser offset
     else

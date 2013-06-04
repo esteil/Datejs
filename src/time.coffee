@@ -32,18 +32,18 @@ TimeSpan = (days, hours, minutes, seconds, milliseconds) ->
     TimeSpan::["get" + $b] = gFn($a)
     TimeSpan::["set" + $b] = sFn($a)
     i++
-  if arguments_.length is 4
+  if arguments.length is 4
     @setDays days
     @setHours hours
     @setMinutes minutes
     @setSeconds seconds
-  else if arguments_.length is 5
+  else if arguments.length is 5
     @setDays days
     @setHours hours
     @setMinutes minutes
     @setSeconds seconds
     @setMilliseconds milliseconds
-  else if arguments_.length is 1 and typeof days is "number"
+  else if arguments.length is 1 and typeof days is "number"
     orient = (if (days < 0) then -1 else +1)
     @setMilliseconds Math.abs(days)
     @setDays Math.floor(@getMilliseconds() / 86400000) * orient
@@ -171,7 +171,7 @@ TimePeriod = (years, months, days, hours, minutes, seconds, milliseconds) ->
     TimePeriod::["get" + $b] = gFn($a)
     TimePeriod::["set" + $b] = sFn($a)
     i++
-  if arguments_.length is 7
+  if arguments.length is 7
     @years = years
     @months = months
     @setDays days
@@ -179,7 +179,7 @@ TimePeriod = (years, months, days, hours, minutes, seconds, milliseconds) ->
     @setMinutes minutes
     @setSeconds seconds
     @setMilliseconds milliseconds
-  else if arguments_.length is 2 and arguments_[0] instanceof Date and arguments_[1] instanceof Date
+  else if arguments.length is 2 and arguments[0] instanceof Date and arguments[1] instanceof Date
 
     # startDate and endDate as arguments
     d1 = years.clone()
