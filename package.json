@@ -1,6 +1,7 @@
 {
   "name": "Datejs",
   "description": "A JavaScript Date Library",
+  "version": "0.0.2",
   "licenses": [
     {
       "type": "MIT",
