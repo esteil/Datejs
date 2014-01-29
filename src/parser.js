@@ -854,7 +854,7 @@
     g.MM = _.cache(_.process(_.rtoken(/^(1[0-2]|0\d)/), t.month));
     g.MMM = g.MMMM = _.cache(_.process(
         g.ctoken("jan feb mar apr may jun jul aug sep oct nov dec"), t.month));
-    g.y = _.cache(_.process(_.rtoken(/^(\d\d?)/), t.year));
+    g.y = _.cache(_.process(_.rtoken(/^(\d+)/), t.year));
     g.yy = _.cache(_.process(_.rtoken(/^(\d\d)/), t.year));
     g.yyy = _.cache(_.process(_.rtoken(/^(\d\d?\d?\d?)/), t.year));
     g.yyyy = _.cache(_.process(_.rtoken(/^(\d\d\d\d)/), t.year));
