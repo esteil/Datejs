@@ -655,6 +655,17 @@
             var gap, mod, orient;
             orient = ((this.orient == "past" || this.operator == "subtract" || this.bias == "past") ? -1 : 1);
 
+            // shortcuts for midnight-based biasing
+            if(this.bias == 'future_date') {
+              this.bias_point = $D.today();
+              this.bias = 'future';
+            } else if(this.bias == 'past_date') {
+              this.bias_point = $D.today();
+              this.bias = 'past';
+            } else {
+              this.bias_point = this.bias_point || new Date();
+            }
+
             // For parsing: "last second", "next minute", "previous hour", "+5 seconds",
             //   "-5 hours", "5 hours", "7 hours ago"
             if(!this.now && "hour minute second".indexOf(this.unit) != -1) {
@@ -763,15 +774,15 @@
               }
 
               if (!this.day) {
-                if ((this.bias == "past" && today > new Date()) || (this.bias == "future" && today < new Date())) {
+                if ((this.bias == "past" && today > this.bias_point) || (this.bias == "future" && today < this.bias_point)) {
                   this.days = 1 * orient
                 }
               } else if (!this.month && !this.months) {
-                if ((this.bias == "past" && today > new Date()) || (this.bias == "future" && today < new Date())) {
+                if ((this.bias == "past" && today > this.bias_point) || (this.bias == "future" && today < this.bias_point)) {
                   this.months = 1 * orient
                 }
               } else if (!this.year) {
-                if ((this.bias == "past" && today > new Date()) || (this.bias == "future" && today < new Date())) {
+                if ((this.bias == "past" && today > this.bias_point) || (this.bias == "future" && today < this.bias_point)) {
                   this.years = 1 * orient
                 }
               }
