@@ -548,16 +548,20 @@
                 switch (s) {
                 case "yesterday":
                     this.days = -1;
+                    this.relative_to_current = true;
                     break;
                 case "tomorrow":
                     this.days = 1;
+                    this.relative_to_current = true;
                     break;
                 case "today":
                     this.days = 0;
+                    this.relative_to_current = true;
                     break;
                 case "now":
                     this.days = 0;
                     this.now = true;
+                    this.relative_to_current = true;
                     break;
                 }
             };
@@ -727,7 +731,7 @@
             }
 
             // For parsing: "15th at 20:15", "15th at 8pm"
-            if ((!expression || this.bias) && this.value && (!this.unit || this.unit == "day") && !this.day) {
+            if ((!expression) && this.value && (!this.unit || this.unit == "day") && !this.day) {
               this.unit = "day";
               this.day = this.value * 1
             }
@@ -766,9 +770,12 @@
                 return Date.today().setWeek(this.value);
             }
 
+            if(this.debug) console.debug('Initial value', today);
+
             today.set(this);
 
-            if (this.bias) {
+            if(this.debug) console.debug('Before bias check', today, JSON.stringify(this));
+            if (this.bias && !this.relative_to_current) {
               if (this.day) {
                 this.days = null
               }
@@ -789,10 +796,13 @@
 
               expression = true;
             }
+            if(this.debug) console.debug('After bias check', today, JSON.stringify(this));
 
             if (expression) {
               today.add(this);
             }
+
+            if(this.debug) console.debug('Final value', today);
 
             return today;
         }

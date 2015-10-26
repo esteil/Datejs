@@ -1263,6 +1263,53 @@
       }
     },
 
+    'biasing to the future, parse "tomorrow"': {
+      run: function() {
+        this.tomorrow = new Date().next().day();
+        this.query = "tomorrow";
+        this.date = Date.parse(this.query, { bias: 'future' });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.tomorrow.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.tomorrow.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.tomorrow.getDate();
+      }
+    },
+
+    'biasing to the future, parse "yesterday"': {
+      run: function() {
+        this.yesterday = new Date().previous().day();
+        this.query = "yesterday";
+        this.date = Date.parse(this.query, { bias: 'future' });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.yesterday.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.yesterday.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.yesterday.getDate();
+      }
+    },
+
+    'biasing to the future, parse "today"': {
+      run: function() {
+        this.today = new Date();
+        this.query = "today";
+        this.date = Date.parse(this.query, { bias: 'future' });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.today.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.today.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.today.getDate();
+      }
+    }
+
   }
 });
-
