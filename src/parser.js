@@ -776,7 +776,7 @@
 
             if(this.debug) console.debug('Before bias check', today, JSON.stringify(this));
             if (this.bias && !this.relative_to_current) {
-              if (this.day) {
+              if (this.day !== null) {
                 this.days = null
               }
 
@@ -784,7 +784,7 @@
                 if ((this.bias == "past" && today > this.bias_point) || (this.bias == "future" && today < this.bias_point)) {
                   this.days = 1 * orient
                 }
-              } else if (!this.month && !this.months) {
+              } else if (this.month === null && !this.months) {
                 if ((this.bias == "past" && today > this.bias_point) || (this.bias == "future" && today < this.bias_point)) {
                   this.months = 1 * orient
                 }

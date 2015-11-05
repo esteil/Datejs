@@ -1309,6 +1309,91 @@
           // and the day of the month is right
           this.date.getDate() == this.today.getDate();
       }
+    },
+
+    'biasing to the future, parses "Jan 25" as january': {
+      run: function() {
+        this.wanted = new Date(2016, 0, 25);
+        this.bias_point = new Date(2015, 10, 4);
+        this.query = "Jan 25";
+        this.date = Date.parse(this.query, { bias: 'future', bias_point: this.bias_point });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.wanted.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.wanted.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.wanted.getDate();
+      }
+    },
+
+    'biasing to the future, parses "Jan 25, 2016" as january': {
+      run: function() {
+        this.wanted = new Date(2016, 0, 25);
+        this.bias_point = new Date(2015, 10, 4);
+        this.query = "Jan 25, 2016";
+        this.date = Date.parse(this.query, { bias: 'future', bias_point: this.bias_point });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.wanted.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.wanted.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.wanted.getDate();
+      }
+    },
+
+    'biasing to the future, parses "Jan 25, 2015" as january': {
+      run: function() {
+        this.wanted = new Date(2015, 0, 25);
+        this.bias_point = new Date(2015, 10, 4);
+        this.query = "Jan 25, 2015";
+        this.date = Date.parse(this.query, { bias: 'future', bias_point: this.bias_point, debug: true });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.wanted.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.wanted.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.wanted.getDate();
+      }
+    },
+
+    'biasing to the future, parses "Jan 25" as january when future': {
+      run: function() {
+        this.wanted = new Date(2016, 0, 25);
+        this.bias_point = new Date(2016, 0, 4);
+        this.query = "Jan 25";
+        this.date = Date.parse(this.query, { bias: 'future', bias_point: this.bias_point });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.wanted.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.wanted.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.wanted.getDate();
+      }
+    },
+
+    'biasing to the future, parses "Jan 25" as january when past': {
+      run: function() {
+        this.wanted = new Date(2016, 0, 25);
+        this.bias_point = new Date(2016, 0, 27);
+        this.query = "Jan 25";
+        this.date = Date.parse(this.query, { bias: 'future', bias_point: this.bias_point });
+      },
+      assert: function() {
+        // the year is the same
+        return this.date.getFullYear() == this.wanted.getFullYear() &&
+          // and the month is right
+          this.date.getMonth() == this.wanted.getMonth() &&
+          // and the day of the month is right
+          this.date.getDate() == this.wanted.getDate();
+      }
     }
 
   }
